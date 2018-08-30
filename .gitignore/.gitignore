@@ -1,0 +1,35 @@
+#a=input('请输入数独矩阵（空缺处以零代替）=')
+a=[[0,0,5,3,0,0,0,0,0],
+   [8,0,0,0,0,0,0,2,0],
+   [0,7,0,0,1,0,5,0,0],
+   [4,0,0,0,0,5,3,0,0],
+   [0,1,0,0,7,0,0,0,6],
+   [0,0,3,2,0,0,0,8,0],
+   [0,6,0,5,0,0,0,0,9],
+   [0,0,4,0,0,0,0,3,0],
+   [0,0,0,0,0,9,7,0,0]]
+zset=[]
+for i in range(9):
+    zset=zset+a[i]
+def nset(x):
+    rowx=x//9;columnx=x%9;rowmo=rowx//3;columnmo=columnx//3
+    b=set([0])|set(a[rowx])|set(a[y][columnx]for y in range(9))|set(a[x1][y1]for x1 in range(rowmo*3,rowmo*3+3) for y1 in range(columnmo*3,columnmo*3+3))
+    c=set(x2 for x2 in range(10))-b
+    return c
+kset=set(i for i in range(81) if zset[i]!=0);zset[0]=nset(0);i=0
+while i<81:
+    if i in kset:
+        i+=1
+        continue
+    while zset[i]==set():
+        i-=1
+        while i in kset:
+            i-=1
+        a[i//9][i%9]=0;zset[i]=zset[i]-set([min(zset[i])])
+    a[i//9][i%9]=min(zset[i])
+    for j in range(i+1,81):
+        if j in kset:
+            continue
+        zset[j]=nset(j)
+    i+=1
+print(a)
